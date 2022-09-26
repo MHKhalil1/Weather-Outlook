@@ -66,6 +66,41 @@ var showCurrentData = function(city, data) {
     imageIcon.setAttribute('src', "https://openweathermap.org/img/wn/" + iconCurrent + "@2x.png")
     headerCityDate.textContent = city + "   (" + currentdate + ")";
 
+    // This will append the data in the container
     divCityHeader.appendChild(headerCityDate)
     divCityHeader.appendChild(imageIcon)
     currentContainerEl.appendChild(divCityHeader)
+
+
+    // Weather data
+    var divCurrent = document.createElement("div")
+    var tempEl = document.createElement("p");
+    var humidityEl = document.createElement("p");
+    var windSpeedEl = document.createElement("p");
+    var uvIndexEl = document.createElement ("p");
+    var uvIndexColorEl = document.createElement("span")
+    uvIndexColorEl.textContent = uvIndex
+    // This function will change colors based on seriousness of uvIndex
+        if (uvIndex <= 4) {
+            uvIndexColorEl.setAttribute("class", "bg-success text-white p-2")
+        } else if (uvIndex <= 8) {
+            uvIndexColorEl.setAttribute("class","bg-warning text-black p-2")
+        } else {
+            uvIndexColorEl.setAttribute("class", "bg-danger text-white p-2")
+        }
+    
+    tempEl.textContent = "Temperature: " + tempCurrent + "°F";
+    humidityEl.textContent = "Humidity: " + humidity + "%";
+    windSpeedEl.textContent = "Wind Speed: " + windSpeed + " MPH";
+    uvIndexEl.textContent = "UV Index: ";
+
+    uvIndexEl.appendChild(uvIndexColorEl)
+
+    divCurrent.appendChild(tempEl);
+    divCurrent.appendChild(humidityEl);
+    divCurrent.appendChild(windSpeedEl);
+    divCurrent.appendChild(uvIndexEl);
+
+    currentContainerEl.appendChild(divCurrent);
+    
+};
