@@ -27,3 +27,22 @@ var loadCities = function() {
 var saveCities = function() {
     localStorage.setItem("cities", JSON.stringify(cities));
 }
+
+// This function should allow the searched city to appear
+var showSearchedCities = function(city) {
+    var cityBoxEl = document.createElement("div");
+    cityBoxEl.setAttribute("class", "card");
+    var cityBoxNameEl = document.createElement("div");
+    cityBoxNameEl.setAttribute("class", "card-body searched-city");
+    cityBoxNameEl.textContent = city;
+    
+    cityBoxEl.appendChild(cityBoxNameEl)
+
+    cityBoxEl.addEventListener("click", function () {
+        receiveCityData(city)
+    });
+
+    historyEl.appendChild(cityBoxEl)
+
+}
+
