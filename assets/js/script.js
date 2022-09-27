@@ -156,7 +156,7 @@ var receiveCityData = function(city) {
     var cityInfo = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=" + APIkey;
 
     fetch(cityInfo).then(function(response) {
-        //if response is okay, no errors found
+        // Response is good = no error
         if (response.ok) {
             response.json().then(function(data) {
             console.log(data);
