@@ -1,0 +1,4 @@
+.searched-city:hover {
+    cursor: pointer;
+    background-color: lightslategray;
+}

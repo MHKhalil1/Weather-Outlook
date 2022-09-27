@@ -69,7 +69,7 @@ var showCurrentData = function(city, data) {
     // This will append the data in the container
     divCityHeader.appendChild(headerCityDate)
     divCityHeader.appendChild(imageIcon)
-    currentContainerEl.appendChild(divCityHeader)
+    containerEl.appendChild(divCityHeader)
 
 
     // Weather data
@@ -101,7 +101,7 @@ var showCurrentData = function(city, data) {
     divCurrent.appendChild(windSpeedEl);
     divCurrent.appendChild(uvIndexEl);
 
-    currentContainerEl.appendChild(divCurrent);
+    containerEl.appendChild(divCurrent);
     
 };
 
@@ -147,8 +147,60 @@ var displayForecastData = function(data) {
     boxEl.appendChild(boxBodyEl);
     forecastEl.appendChild(boxEl);
     
-    // Resets the form 
-    cityFormEl.reset()
-
     }
 };
+
+var receiveCityData = function(city) {
+    event.preventDefault();
+    
+    var cityInfo = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=" + APIkey;
+
+    fetch(cityInfo).then(function(response) {
+        //if response is okay, no errors found
+        if (response.ok) {
+            response.json().then(function(data) {
+            console.log(data);
+
+    var cityName = data.name;
+    var latitude = data.coord.lat;
+    var longitude = data.coord.lon;
+    
+    var prevSearch = cities.includes(cityName)
+    if (!prevSearch) {
+        cities.push(cityName)
+        saveCities()
+        showSearchedCities(cityName)
+    }
+
+    receiveWeatherData(cityName,latitude,longitude);
+
+    });
+
+    } else { 
+        alert("That city wasn't found!")
+        cityFormEl.reset()
+     }
+   });
+};
+
+var receiveWeatherData = function(city,latitude,longitude) { 
+   
+    var forecastInfo = "https://api.openweathermap.org/data/2.5/onecall?lat=" + latitude + "&lon=" + longitude + "&units=imperial&exclude=minutely,hourly&appid=" + APIkey;
+        
+    fetch(forecastInfo).then(function(response) {
+        response.json().then(function(data) {
+            console.log(data);
+
+        showCurrentData(city, data);
+        displayForecastData(data);
+
+        });
+    });
+};
+
+loadCities()
+
+cityEl.addEventListener("submit", function() {
+    cityInputEl = cityInputEl.value.trim();
+    receiveCityData(cityInputEl);
+})
